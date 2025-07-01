@@ -23,12 +23,13 @@ return new class extends Migration
 
 
             $table->enum('merge_status', ['active', 'merged', 'inactive'])->default('active');
-            $table->unsignedBigInteger('merged_into_contact_id')->nullable(); 
+            // $table->unsignedBigInteger('merged_into_contact_id')->nullable(); 
 
             $table->timestamps(); 
-            $table->foreign('merged_into_contact_id')
-                  ->references('id')
-                  ->on('contacts')
+            $table->boolean('is_merged')->default(false); 
+            $table->foreignId('merged_into_contact_id')
+                  ->nullable()
+                  ->constrained('contacts') 
                   ->onDelete('set null');
         });
     }
